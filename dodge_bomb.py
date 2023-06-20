@@ -1,5 +1,5 @@
-import sys
 import random
+import sys
 
 
 import pygame as pg
@@ -61,7 +61,6 @@ def main():
             pg.time.wait(3000)
             return
 
-        #gameoverがFolesのときにkk_imgを表示する
         key_lst = pg.key.get_pressed()  # キー入力の取得(練習3)
         sum_mv = [0, 0] # 移動量のリストを初期化する(練習3)
         for k, mv in delta.items():  # キー入力の処理(練習3)
@@ -82,7 +81,7 @@ def main():
         if not height:
             vy = -vy
         # 10回爆弾の移動量を加速する(演習2)
-        if tmr % 10 == 0 and tmr < 1000:
+        if tmr % 10 == 0 and tmr < 100:
             if vx > 0:
                 vx += 1
             else:
