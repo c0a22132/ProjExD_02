@@ -5,13 +5,27 @@ import random
 import pygame as pg
 
 
-WIDTH, HEIGHT = 1600, 900
+WIDTH, HEIGHT = 300, 300
 delta = {
         pg.K_UP: (0,-5),
         pg.K_DOWN: (0, +5),
         pg.K_LEFT: (-5, 0),
         pg.K_RIGHT: (+5, 0),
         }
+
+def check_bound(rect: pg.rect) -> tuple[bool, bool]: #爆弾のオブジェクトのrectの座標が画面の範囲外にならないようにする関数(5)
+    """
+    オブジェクトが画面内or画面外を判定し、真理値をタプルを返す関数
+    引数1:こうかとんRector 爆弾Rect
+    戻り値:横方向、縦方向のはみ出し判定結果(画面内:True/画面外:False)
+    """
+
+    width, height = (True, True)  # 横方向、縦方向のはみ出し判定結果を真理値で初期化する(練習4)
+    if rect.left < 0 or WIDTH < rect.right:  # オブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
+        width = False
+    if rect.top < 0 or HEIGHT < rect.bottom:  # オブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
+        height = False
+    return (width, height)  # 横方向、縦方向のはみ出し判定結果をタプルで返す(練習4)
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -48,6 +62,15 @@ def main():
         screen.blit(kk_img, (kk_rct))
         bd_rct.move_ip(vx, vy)  # 爆弾のオブジェクトのrectを移動する(練習2)
         screen.blit(bd_img, (bd_rct))  # 爆弾画像をテスト描画(練習1)
+
+        if check_bound(kk_rct) != (True, True):  # 爆弾のオブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  # こうかのオブジェクトのrectを移動する(練習4)
+        
+        width, height = check_bound(bd_rct)  # 爆弾のオブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
+        if not width:
+            vx = -vx
+        if not height:
+            vy = -vy
 
         pg.display.update()
         tmr += 1
