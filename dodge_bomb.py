@@ -18,8 +18,10 @@ def main():
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)  # 爆弾の空オブジェクトに赤色の円を描画する(演習1)
     (x, y) = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #xとyをランダムに生成する(練習1)
     bd_rct = bd_img.get_rect()  #爆弾の空オブジェクトを取得する(練習1)
+    vx , vy = +10, +10  #xとyの移動量を設定する(練習2)
     bd_rct.center = (x, y)  #爆弾の空オブジェクトの中心座標を(x, y)に設定する(練習1)
     bd_img.set_colorkey((0, 0, 0))  #爆弾の黒色を透明にする(練習1)
+    vx , vy = +10, -10  #xとyの移動量を設定する(練習2)
 
     clock = pg.time.Clock()
     tmr = 0
@@ -30,12 +32,12 @@ def main():
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
-
-        screen.blit(bd_img, (bd_rct))  #爆弾画像をテスト描画(練習1)
+        bd_rct.move_ip(vx, vy)  # 爆弾のオブジェクトのrectを移動する(練習2)
+        screen.blit(bd_img, (bd_rct))  # 爆弾画像をテスト描画(練習1)
 
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(100)
 
 
 if __name__ == "__main__":
