@@ -57,7 +57,6 @@ def main():
                 return
 
         if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾のオブジェクトが衝突しているか判定する(練習2)(演習3)
-            gameover = True
             screen.blit(bg_img, [0, 0])
             screen.blit(kk_go_img, (kk_rct))
             pg.display.update()
@@ -73,6 +72,8 @@ def main():
                 sum_mv[0] += mv[0] # 移動量を加算する(練習3)
                 sum_mv[1] += mv[1] # 移動量を加算する(練習3)
         kk_rct.move_ip(sum_mv)  # こうかのオブジェクトのrectを移動する(練習3)
+
+        
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, (kk_rct))
