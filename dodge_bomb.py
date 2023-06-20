@@ -13,6 +13,8 @@ delta = {
         pg.K_RIGHT: (+5, 0),
         }
 
+
+
 def check_bound(rect: pg.rect) -> tuple[bool, bool]: #爆弾のオブジェクトのrectの座標が画面の範囲外にならないようにする関数(5)
     """
     オブジェクトが画面内or画面外を判定し、真理値をタプルを返す関数
@@ -28,11 +30,14 @@ def check_bound(rect: pg.rect) -> tuple[bool, bool]: #爆弾のオブジェク�
     return (width, height)  # 横方向、縦方向のはみ出し判定結果をタプルで返す(練習4)
 
 def main():
+    gameover = False
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
-    kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_go_img = pg.image.load("ex02/fig/8.png")
+    kk_go_img = pg.transform.rotozoom(kk_go_img, 0, 2)
+    kk_img = pg.transform.rotozoom(kk_img, 0, 2)
     bd_img = pg.Surface((20, 20))  # 爆弾の空オブジェクトを生成する(練習1)
     kk_rct = kk_img.get_rect()  # こうかのオブジェクトのrectを取得する(練習3)
     kk_rct.center = (900, 400)  # こうかとんのオブジェクトのrectの座標を(900, 400)に設定する(練習3)
@@ -50,10 +55,16 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-            
+
         if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾のオブジェクトが衝突しているか判定する(練習2)
-            print("GAME OVER")  # GAME OVERと表示する(練習5)
-            return # プログラムを終了する(練習5)
+            gameover = True
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_go_img, (kk_rct))
+            pg.display.update()
+            pg.time.wait(3000)
+            return
+        
+        #gameoverがFolesのときにkk_imgを表示する
 
         key_lst = pg.key.get_pressed()  # キー入力の取得(練習3)
         sum_mv = [0, 0] # 移動量のリストを初期化する(練習3)
@@ -63,8 +74,15 @@ def main():
                 sum_mv[1] += mv[1] # 移動量を加算する(練習3)
         kk_rct.move_ip(sum_mv)  # こうかのオブジェクトのrectを移動する(練習3)
 
-        screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, (kk_rct))
+        
+        if gameover == False:
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_img, (kk_rct))
+        elif gameover == True:
+            screen.blit(bg_img, [0, 0])
+            screen.blit(kk_go_img, (kk_rct))
+            
+        #screen.blit(kk_img, (kk_rct))
         bd_rct.move_ip(vx, vy)  # 爆弾のオブジェクトのrectを移動する(練習2)
         screen.blit(bd_img, (bd_rct))  # 爆弾画像をテスト描画(練習1)
 
@@ -76,6 +94,18 @@ def main():
             vx = -vx
         if not height:
             vy = -vy
+
+        # 10回爆弾の移動量を加速する(演習2)
+        if tmr % 10 == 0 and tmr < 100:
+            if vx > 0:
+                vx += 1
+            else:
+                vx -= 1
+            if vy > 0:
+                vy += 1
+            else:
+                vy -= 1
+
 
         pg.display.update()
         tmr += 1
