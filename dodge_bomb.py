@@ -5,7 +5,7 @@ import random
 import pygame as pg
 
 
-WIDTH, HEIGHT = 300, 300
+WIDTH, HEIGHT = 1600, 900
 delta = {
         pg.K_UP: (0,-5),
         pg.K_DOWN: (0, +5),
@@ -50,6 +50,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        if kk_rct.colliderect(bd_rct):  # こうかとんと爆弾のオブジェクトが衝突しているか判定する(練習2)
+            print("GAME OVER")  # GAME OVERと表示する(練習5)
+            return # プログラムを終了する(練習5)
+
         key_lst = pg.key.get_pressed()  # キー入力の取得(練習3)
         sum_mv = [0, 0] # 移動量のリストを初期化する(練習3)
         for k, mv in delta.items():  # キー入力の処理(練習3)
