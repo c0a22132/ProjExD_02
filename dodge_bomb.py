@@ -14,7 +14,6 @@ delta = {
         }
 
 
-
 def check_bound(rect: pg.rect) -> tuple[bool, bool]: #爆弾のオブジェクトのrectの座標が画面の範囲外にならないようにする関数(5)
     """
     オブジェクトが画面内or画面外を判定し、真理値をタプルを返す関数
@@ -48,7 +47,6 @@ def main():
     bd_rct.center = (x, y)  # 爆弾の空オブジェクトの中心座標を(x, y)に設定する(練習1)
     bd_img.set_colorkey((0, 0, 0))  #爆弾の黒色を透明にする(練習1)
     vx , vy = +10, -10  # xとyの移動量を設定する(練習2)
-
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -62,9 +60,8 @@ def main():
             pg.display.update()
             pg.time.wait(3000)
             return
-        
-        #gameoverがFolesのときにkk_imgを表示する
 
+        #gameoverがFolesのときにkk_imgを表示する
         key_lst = pg.key.get_pressed()  # キー入力の取得(練習3)
         sum_mv = [0, 0] # 移動量のリストを初期化する(練習3)
         for k, mv in delta.items():  # キー入力の処理(練習3)
@@ -72,28 +69,20 @@ def main():
                 sum_mv[0] += mv[0] # 移動量を加算する(練習3)
                 sum_mv[1] += mv[1] # 移動量を加算する(練習3)
         kk_rct.move_ip(sum_mv)  # こうかのオブジェクトのrectを移動する(練習3)
-
-        
-
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, (kk_rct))
-        
-            
         #screen.blit(kk_img, (kk_rct))
         bd_rct.move_ip(vx, vy)  # 爆弾のオブジェクトのrectを移動する(練習2)
         screen.blit(bd_img, (bd_rct))  # 爆弾画像をテスト描画(練習1)
-
         if check_bound(kk_rct) != (True, True):  # 爆弾のオブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
-            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  # こうかのオブジェクトのrectを移動する(練習4)
-        
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])  # こうかのオブジェクトのrectを移動する(練習4)    
         width, height = check_bound(bd_rct)  # 爆弾のオブジェクトのrectの座標が画面の範囲外になっているか判定する(練習4)
         if not width:
             vx = -vx
         if not height:
             vy = -vy
-
         # 10回爆弾の移動量を加速する(演習2)
-        if tmr % 10 == 0 and tmr < 100:
+        if tmr % 10 == 0 and tmr < 1000:
             if vx > 0:
                 vx += 1
             else:
@@ -102,8 +91,6 @@ def main():
                 vy += 1
             else:
                 vy -= 1
-
-
         pg.display.update()
         tmr += 1
         clock.tick(100)
